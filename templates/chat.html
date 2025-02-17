@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="chat-container">
+    <div class="chat-messages" id="messageContainer">
+        <div class="message system">
+            Hello! I'm Gyaanchand. How can I help you today?
+        </div>
+    </div>
+    
+    <div class="chat-input">
+        <form id="chatForm" class="d-flex gap-2">
+            <input type="text" id="userInput" class="form-control" placeholder="Type your message...">
+            <button type="submit" class="btn btn-primary">Send</button>
+        </form>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+{% endblock %}

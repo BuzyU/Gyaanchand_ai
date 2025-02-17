@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="text-center py-5">
+    <h1 class="display-4">Welcome to Gyaanchand</h1>
+    <p class="lead">Your Open-Source AI Assistant for Code Generation and Conversation</p>
+    <div class="mt-4">
+        <a href="/chat" class="btn btn-primary btn-lg">Start Chatting</a>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Conversation</h5>
+                <p class="card-text">Chat naturally with an AI that understands context and remembers previous interactions.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Code Generation</h5>
+                <p class="card-text">Generate code snippets and simple websites with natural language prompts.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Open Source</h5>
+                <p class="card-text">Built with free and open-source tools, making AI accessible to everyone.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
