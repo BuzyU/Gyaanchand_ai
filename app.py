@@ -3,6 +3,7 @@ import logging
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
+from flask_cors import CORS
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
@@ -16,8 +17,12 @@ db = SQLAlchemy(model_class=Base)
 app = Flask(__name__)
 app.secret_key = os.environ.get("SESSION_SECRET")
 
-# configure the database
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL", "sqlite:///gyaanchand.db")
+# Enable CORS for all routes
+CORS(app)
+
+# configure the database to use SQLite with absolute path
+db_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'gyaanchand.db')
+app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{db_path}"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
     "pool_recycle": 300,
@@ -35,11 +40,10 @@ with app.app_context():
         logger.info("Database tables created successfully")
     except Exception as e:
         logger.error(f"Error creating database tables: {str(e)}")
-        raise
+        # Don't raise the error if tables already exist
+        if not "already exists" in str(e):
+            raise
 
 # Initialize routes after database setup
 from routes import init_routes
 init_routes(app)
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
