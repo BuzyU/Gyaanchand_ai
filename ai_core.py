@@ -1,45 +1,39 @@
-from transformers import AutoTokenizer, AutoModelForCausalLM
-import torch
+import logging
 from utils.code_generator import CodeGenerator
+
+logger = logging.getLogger(__name__)
 
 class AICore:
     def __init__(self, memory_manager):
         self.memory_manager = memory_manager
-        # Use GPT-2 as it's a free and capable model for text generation
-        self.model_name = "gpt2"
-        self.tokenizer = AutoTokenizer.from_pretrained(self.model_name)
-        self.model = AutoModelForCausalLM.from_pretrained(self.model_name)
         self.code_generator = CodeGenerator()
+        logger.info("Initialized simplified AI Core")
 
     def process_message(self, message):
-        # Retrieve context from memory
-        context = self.memory_manager.get_context(message)
+        try:
+            # Store basic interaction
+            response = self._generate_simple_response(message)
+            self.memory_manager.store_interaction(message, response)
+            return response
+        except Exception as e:
+            logger.error(f"Error processing message: {str(e)}")
+            return "I'm sorry, I encountered an error. Please try again."
 
-        # Prepare input with context
-        input_text = f"Context: {context}\nUser: {message}\nAssistant:"
-        inputs = self.tokenizer(input_text, return_tensors="pt", max_length=512, truncation=True)
-
-        # Generate response
-        with torch.no_grad():
-            outputs = self.model.generate(
-                inputs["input_ids"],
-                max_length=200,
-                num_beams=4,
-                temperature=0.7,
-                pad_token_id=self.tokenizer.eos_token_id
-            )
-
-        response = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
-
-        # Extract only the assistant's response
-        if "Assistant:" in response:
-            response = response.split("Assistant:")[-1].strip()
-
-        # Store interaction in memory
-        self.memory_manager.store_interaction(message, response)
-
-        return response
+    def _generate_simple_response(self, message):
+        # Simple template-based responses
+        message = message.lower()
+        if "hello" in message or "hi" in message:
+            return "Hello! How can I help you today?"
+        elif "code" in message or "generate" in message:
+            return "I can help you generate code. Please specify what kind of code you need."
+        elif "help" in message:
+            return "I can help you with code generation and answer questions. What would you like to know?"
+        else:
+            return "I understand you want to discuss something. Could you please be more specific?"
 
     def generate_code(self, prompt):
-        # For code generation, use the code_generator which has templates
-        return self.code_generator.generate(prompt)
+        try:
+            return self.code_generator.generate(prompt)
+        except Exception as e:
+            logger.error(f"Error generating code: {str(e)}")
+            return "# Error generating code\nprint('Error: Please try again')"
