@@ -31,7 +31,7 @@ task = "packager.installForAll"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "gunicorn -w 1 -b 0.0.0.0:5000 app:app --timeout 120"
+args = "gunicorn -w 1 -b 0.0.0.0:5000 app:app --timeout 120 --preload"
 waitForPort = 5000
 
 [[ports]]
