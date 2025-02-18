@@ -21,7 +21,7 @@ args = "AI Assistant Server"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "Backend Server"
+args = "Flask Server"
 
 [[workflows.workflow]]
 name = "AI Assistant Server"
@@ -39,7 +39,7 @@ args = "gunicorn -w 1 -b 0.0.0.0:5000 app:app --timeout 120 --preload"
 waitForPort = 5000
 
 [[workflows.workflow]]
-name = "Backend Server"
+name = "Flask Server"
 author = "agent"
 
 [workflows.workflow.metadata]
@@ -50,8 +50,8 @@ task = "packager.installForAll"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "node server/index.js"
-waitForPort = 3000
+args = "gunicorn -w 1 -b 0.0.0.0:5000 app:app --timeout 120 --preload"
+waitForPort = 5000
 
 [[ports]]
 localPort = 3000

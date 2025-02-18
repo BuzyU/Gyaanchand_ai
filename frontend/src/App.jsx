@@ -4,7 +4,7 @@ import './App.css'
 // Get the API URL based on environment
 const API_URL = process.env.NODE_ENV === 'production' 
   ? '/api' 
-  : 'http://localhost:3000/api';
+  : 'http://localhost:5000/api';
 
 function App() {
   const [messages, setMessages] = useState([

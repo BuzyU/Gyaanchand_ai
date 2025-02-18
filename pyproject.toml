@@ -16,6 +16,7 @@ dependencies = [
     "torch>=2.6.0",
     "sqlalchemy>=2.0.38",
     "flask-cors>=5.0.0",
+    "twilio>=9.4.5",
 ]
 
 [[tool.uv.index]]
