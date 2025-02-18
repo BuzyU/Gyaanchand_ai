@@ -17,8 +17,8 @@ db = SQLAlchemy(model_class=Base)
 app = Flask(__name__)
 app.secret_key = os.environ.get("SESSION_SECRET")
 
-# Enable CORS for development
-CORS(app)
+# Enable CORS for all routes in production
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 # configure the database to use SQLite with absolute path
 db_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'gyaanchand.db')
