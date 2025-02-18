@@ -2,7 +2,7 @@ import { useState } from 'react'
 import './App.css'
 
 // Get the API URL based on environment
-const API_URL = process.env.NODE_ENV === 'production' 
+const API_URL = import.meta.env.PROD 
   ? '/api' 
   : 'http://localhost:5000/api';
 
